@@ -1,0 +1,722 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>College Fair Finder - Discover Events Easily</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+      rel="stylesheet"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+      :root {
+        --primary-color: #3354b3;
+        --primary-light: #edf2fd;
+        --secondary-color: #2ccd89;
+        --background-color: #f8fafd;
+        --text-color: #333;
+        --text-secondary: #6c757d;
+        --card-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+        --transition: all 0.25s ease;
+      }
+
+      body {
+        font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI",
+          Roboto, sans-serif;
+        background-color: var(--background-color);
+        color: var(--text-color);
+        line-height: 1.6;
+      }
+
+      /* Typography */
+      h1, h2, h3, h4, h5, h6 {
+        font-weight: 700;
+        letter-spacing: -0.03em;
+      }
+
+      .text-primary {
+        color: var(--primary-color) !important;
+      }
+
+      /* Navbar */
+      .navbar {
+        background-color: white;
+        box-shadow: 0 2px 15px rgba(0, 0, 0, 0.04);
+        padding: 1.2rem 0;
+      }
+
+      .navbar-brand {
+        color: var(--primary-color) !important;
+        font-weight: 700;
+        font-size: 1.6rem;
+        letter-spacing: -0.02em;
+      }
+
+      .nav-link {
+        color: var(--text-color) !important;
+        font-weight: 500;
+        padding: 0.5rem 1.2rem !important;
+        transition: var(--transition);
+        position: relative;
+      }
+
+      .nav-link:after {
+        content: '';
+        position: absolute;
+        width: 0;
+        height: 2px;
+        bottom: 0;
+        left: 50%;
+        background-color: var(--primary-color);
+        transition: var(--transition);
+        transform: translateX(-50%);
+      }
+
+      .nav-link:hover {
+        color: var(--primary-color) !important;
+      }
+
+      .nav-link:hover:after {
+        width: 80%;
+      }
+
+      /* Hero Section */
+      .hero-section {
+        background: linear-gradient(135deg, var(--primary-color), #2a47a1);
+        color: white;
+        padding: 7rem 0;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .hero-section::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+        opacity: 0.1;
+      }
+
+      .hero-title {
+        font-size: 3.5rem;
+        font-weight: 800;
+        letter-spacing: -0.03em;
+        margin-bottom: 1.5rem;
+        line-height: 1.2;
+      }
+
+      .hero-subtitle {
+        font-size: 1.25rem;
+        font-weight: 400;
+        opacity: 0.9;
+        max-width: 600px;
+        margin: 0 auto 2rem auto;
+      }
+
+      /* Cards */
+      .card {
+        border: none;
+        border-radius: 12px;
+        box-shadow: var(--card-shadow);
+        transition: var(--transition);
+        overflow: hidden;
+      }
+
+      .card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+      }
+
+      /* Buttons */
+      .btn {
+        border: none;
+        font-weight: 600;
+        padding: 0.75rem 2rem;
+        border-radius: 8px;
+        transition: var(--transition);
+      }
+
+      .btn-primary {
+        background-color: var(--primary-color);
+        color: white;
+      }
+
+      .btn-primary:hover {
+        background-color: #2a47a1;
+        transform: translateY(-2px);
+      }
+
+      .btn-success {
+        background-color: var(--secondary-color);
+        color: white;
+      }
+
+      .btn-success:hover {
+        background-color: #25b679;
+        transform: translateY(-2px);
+      }
+
+      .btn-info {
+        background-color: #17a2b8;
+        color: white;
+      }
+      
+      .btn-info:hover {
+        background-color: #138496;
+        transform: translateY(-2px);
+      }
+
+      /* Form Controls */
+      .input-group {
+        max-width: 700px;
+        margin: 0 auto;
+      }
+
+      .form-control {
+        border-radius: 8px 0 0 8px;
+        padding: 0.75rem 1.25rem;
+        border: 1px solid #e0e0e0;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
+        font-size: 1rem;
+      }
+
+      .form-control:focus {
+        border-color: var(--primary-color);
+        box-shadow: 0 0 0 3px rgba(51, 84, 179, 0.1);
+      }
+
+      /* Results Container */
+      .table-container {
+        background: white;
+        border-radius: 12px;
+        padding: 2rem;
+        box-shadow: var(--card-shadow);
+      }
+
+      /* Loading */
+      #loading {
+        background: rgba(0, 0, 0, 0.7);
+        z-index: 1050;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .loading-content {
+        background: white;
+        padding: 2.5rem;
+        border-radius: 12px;
+        box-shadow: var(--card-shadow);
+        text-align: center;
+      }
+
+      /* Footer */
+      footer {
+        background: #1e2f65;
+        color: #fff;
+        padding: 3rem 0;
+      }
+
+      footer .text-muted {
+        color: rgba(255, 255, 255, 0.7) !important;
+      }
+
+      /* Feature Cards */
+      .feature-card {
+        padding: 2.5rem 1.5rem;
+        text-align: center;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        background-color: white;
+      }
+
+      .feature-icon {
+        font-size: 2.5rem;
+        color: var(--primary-color);
+        margin-bottom: 1.5rem;
+        background-color: var(--primary-light);
+        width: 80px;
+        height: 80px;
+        border-radius: 50%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-left: auto;
+        margin-right: auto;
+      }
+
+      .feature-card h4 {
+        font-size: 1.25rem;
+        margin-bottom: 1rem;
+      }
+
+      .feature-card p {
+        color: var(--text-secondary);
+        margin-bottom: 0;
+      }
+      
+      /* Event details styling */
+      .event-details {
+        line-height: 1.8;
+        font-size: 1rem;
+      }
+      
+      .event-details br {
+        display: block;
+        margin-bottom: 0.3rem;
+      }
+      
+      .card-header {
+        background-color: var(--primary-light);
+        color: var(--primary-color);
+        border-bottom: none;
+        padding: 1.25rem 1.5rem;
+        position: relative;
+      }
+      
+      .card-header a {
+        text-decoration: none;
+      }
+      
+      .card-header a:hover {
+        text-decoration: underline;
+      }
+      
+      /* JSON styling */
+      #json-content {
+        background-color: #f8f9fa;
+        padding: 1.5rem;
+        border-radius: 8px;
+        font-family: 'Fira Code', monospace;
+        white-space: pre-wrap;
+        word-break: break-word;
+        max-height: 70vh;
+        overflow-y: auto;
+        font-size: 0.9rem;
+      }
+      
+      /* JSON syntax highlighting */
+      .json-key {
+        color: #0b7285;
+        font-weight: bold;
+      }
+      
+      .json-string {
+        color: #2e7d32;
+      }
+      
+      .json-number {
+        color: #0d47a1;
+      }
+      
+      .json-boolean {
+        color: #b71c1c;
+        font-weight: bold;
+      }
+      
+      .json-null {
+        color: #7e57c2;
+        font-weight: bold;
+      }
+      
+      .modal-dialog {
+        max-width: 800px;
+      }
+      
+      .modal-content {
+        border: none;
+        border-radius: 12px;
+        overflow: hidden;
+      }
+      
+      .modal-header {
+        background-color: var(--primary-light);
+        border-bottom: none;
+      }
+      
+      .modal-title {
+        color: var(--primary-color);
+        font-weight: 600;
+      }
+      
+      /* Structured event styling */
+      .event-list {
+        margin-bottom: 1rem;
+      }
+      
+      .event-item {
+        border-left: 3px solid var(--primary-color);
+        padding-left: 1rem;
+      }
+      
+      .event-title {
+        color: var(--primary-color);
+        margin-bottom: 0.5rem;
+        font-weight: 600;
+      }
+      
+      /* Event card styling */
+      .card .list-group-item {
+        border-left: none;
+        border-right: none;
+        padding: 0.75rem 0;
+        display: flex;
+        align-items: flex-start;
+      }
+      
+      .card .list-group-item:first-child {
+        border-top: none;
+      }
+      
+      .card .list-group-item:last-child {
+        border-bottom: none;
+      }
+      
+      .card .card-body {
+        padding: 1.5rem;
+      }
+      
+      .card .list-group-flush {
+        margin: -1.5rem;
+      }
+      
+      /* Icon styling */
+      .fa-calendar-day, .fa-clock {
+        color: var(--primary-color);
+        width: 20px;
+        margin-top: 4px;
+      }
+      
+      .fa-map-marker-alt {
+        color: var(--secondary-color);
+        width: 20px;
+        margin-top: 4px;
+      }
+      
+      .fa-link {
+        color: #6c757d;
+        width: 20px;
+        margin-top: 4px;
+      }
+      
+      .list-group-item strong {
+        margin-right: 0.5rem;
+        min-width: 70px;
+        display: inline-block;
+      }
+      
+      .list-group-item a {
+        color: var(--primary-color);
+        text-decoration: none;
+        font-weight: 500;
+      }
+      
+      .list-group-item a:hover {
+        text-decoration: underline;
+      }
+      
+      .table {
+        margin-bottom: 0;
+      }
+      
+      .table th {
+        background-color: var(--primary-light);
+        color: var(--primary-color);
+        font-weight: 600;
+        border-bottom: none;
+      }
+      
+      /* Nested tables styling */
+      .table .table {
+        background-color: white;
+        margin-bottom: 0;
+      }
+      
+      .table .table th {
+        background-color: #f0f0f0;
+      }
+      
+      /* Results section */
+      .results-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 1.5rem;
+        border-bottom: 1px solid #eee;
+        padding-bottom: 1.5rem;
+      }
+      
+      .results-title {
+        font-size: 1.75rem;
+        font-weight: 700;
+        margin-bottom: 0;
+        color: var(--primary-color);
+      }
+      
+      .alert-success {
+        background-color: rgba(44, 205, 137, 0.1);
+        border: none;
+        color: #25b679;
+        border-radius: 8px;
+      }
+      
+      .row-cols-1 > * {
+        padding-left: 1rem;
+        padding-right: 1rem;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg sticky-top">
+      <div class="container">
+        <a class="navbar-brand" href="/">
+          <i class="fas fa-calendar-alt me-2"></i>College Fair Finder
+        </a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarNav"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div
+          class="collapse navbar-collapse justify-content-end"
+          id="navbarNav"
+        >
+          <ul class="navbar-nav">
+            <li class="nav-item">
+              <a class="nav-link" href="/">Home</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#about">For Recruiters</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{{ url_for('login') }}">Sign In</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{{ url_for('signup') }}">Sign Up</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <div class="hero-section">
+      <div class="container text-center position-relative">
+        <h1 class="hero-title">Simplify College Recruitment Planning</h1>
+        <p class="hero-subtitle">
+          Instantly extract, organize and analyze college fair events from any website.
+          Designed specifically for college recruiters and admissions professionals.
+        </p>
+        <div class="mt-4">
+          <a href="{{ url_for('signup') }}" class="btn btn-light btn-lg me-3">
+            <i class="fas fa-user-plus me-2"></i>Get Started
+          </a>
+          <a href="{{ url_for('login') }}" class="btn btn-outline-light btn-lg">
+            <i class="fas fa-sign-in-alt me-2"></i>Sign In
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Features Section -->
+    <div class="container py-5 mt-4">
+      <div class="text-center mb-5">
+        <h2 class="fw-bold mb-3">Streamline Your Recruitment Process</h2>
+        <p class="text-secondary mx-auto" style="max-width: 700px">
+          Our platform helps admissions professionals save time and discover more opportunities to connect with prospective students.
+        </p>
+      </div>
+      <div class="row g-4">
+        <div class="col-md-4">
+          <div class="card feature-card h-100">
+            <div class="feature-icon">
+              <i class="fas fa-search"></i>
+            </div>
+            <h4 class="fw-bold">Intelligent Search</h4>
+            <p>Instantly extract events from college fair websites with our AI-powered system.</p>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="card feature-card h-100">
+            <div class="feature-icon">
+              <i class="fas fa-table"></i>
+            </div>
+            <h4 class="fw-bold">Structured Data</h4>
+            <p>View events in an organized format with dates, locations, and contact details clearly highlighted.</p>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="card feature-card h-100">
+            <div class="feature-icon">
+              <i class="fas fa-file-excel"></i>
+            </div>
+            <h4 class="fw-bold">Export & Share</h4>
+            <p>Download event data as Excel or JSON for seamless integration with your planning tools.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Testimonial/About Section -->
+    <div class="container py-5 mb-5" id="about">
+      <div class="text-center mb-5">
+        <h2 class="fw-bold mb-3">Made for College Recruitment Professionals</h2>
+        <p class="text-secondary mx-auto" style="max-width: 700px">
+          Our tool is specifically designed to help admissions teams plan their recruitment travel more efficiently.
+        </p>
+      </div>
+      <div class="row g-4">
+        <div class="col-md-6">
+          <div class="card h-100 p-4">
+            <h4 class="mb-3 text-primary">For Admissions Teams</h4>
+            <ul class="list-unstyled">
+              <li class="mb-3"><i class="fas fa-check-circle text-success me-2"></i> Extract events from multiple sources in seconds</li>
+              <li class="mb-3"><i class="fas fa-check-circle text-success me-2"></i> Export data to your planning tools</li>
+              <li class="mb-3"><i class="fas fa-check-circle text-success me-2"></i> Track upcoming fairs and recruitment opportunities</li>
+              <li class="mb-3"><i class="fas fa-check-circle text-success me-2"></i> Save hours of manual data entry</li>
+            </ul>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="card h-100 p-4">
+            <h4 class="mb-3 text-primary">For Travel Planning</h4>
+            <ul class="list-unstyled">
+              <li class="mb-3"><i class="fas fa-check-circle text-success me-2"></i> Find all events in a specific region</li>
+              <li class="mb-3"><i class="fas fa-check-circle text-success me-2"></i> Organize events by date and location</li>
+              <li class="mb-3"><i class="fas fa-check-circle text-success me-2"></i> Get details including venues, times, and contacts</li>
+              <li class="mb-3"><i class="fas fa-check-circle text-success me-2"></i> Plan more efficient recruitment travel</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+      <div class="container text-center">
+        <p class="mb-2">© 2025 College Fair Finder. All rights reserved.</p>
+        <p class="text-muted small">
+          Helping admissions teams connect with the right students.
+        </p>
+      </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+      let currentFilename = '';
+      let jsonData = null;
+      
+      document
+        .getElementById("urlForm")
+        .addEventListener("submit", async function (e) {
+          e.preventDefault();
+
+          const url = document.getElementById("url").value;
+          const loading = document.getElementById("loading");
+          const resultsContainer = document.getElementById("results-container");
+          const results = document.getElementById("results");
+
+          loading.classList.remove("d-none");
+          results.innerHTML = "";
+          resultsContainer.style.display = "none";
+
+          try {
+            const response = await fetch("/process", {
+              method: "POST",
+              headers: { "Content-Type": "application/x-www-form-urlencoded" },
+              body: `url=${encodeURIComponent(url)}`,
+            });
+
+            const data = await response.json();
+
+            if (response.ok) {
+              results.innerHTML = data.table;
+              resultsContainer.style.display = "block";
+              resultsContainer.scrollIntoView({ behavior: "smooth" });
+              
+              // Store the filename and JSON data
+              currentFilename = data.filename;
+              jsonData = data.data;
+            } else {
+              throw new Error(data.error || "Unable to process the URL");
+            }
+          } catch (error) {
+            results.innerHTML = `<div class="alert alert-danger">${error.message}</div>`;
+            resultsContainer.style.display = "block";
+          } finally {
+            loading.classList.add("d-none");
+          }
+        });
+        
+      // View JSON button
+      document.getElementById('view-json-btn').addEventListener('click', function() {
+        if (jsonData) {
+          // Format JSON with syntax highlighting
+          const formattedJson = JSON.stringify(jsonData, null, 2)
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;')
+            .replace(/("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g, function (match) {
+              let cls = 'json-number';
+              if (/^"/.test(match)) {
+                if (/:$/.test(match)) {
+                  cls = 'json-key';
+                } else {
+                  cls = 'json-string';
+                }
+              } else if (/true|false/.test(match)) {
+                cls = 'json-boolean';
+              } else if (/null/.test(match)) {
+                cls = 'json-null';
+              }
+              return '<span class="' + cls + '">' + match + '</span>';
+            });
+          
+          document.getElementById('json-content').innerHTML = formattedJson;
+          new bootstrap.Modal(document.getElementById('jsonModal')).show();
+        } else {
+          alert('No JSON data available');
+        }
+      });
+      
+      // Download JSON button
+      document.getElementById('download-json-btn').addEventListener('click', function() {
+        if (currentFilename) {
+          window.location.href = `/download/${currentFilename}`;
+        } else {
+          alert('No file available for download');
+        }
+      });
+      
+      // Download Excel button
+      document.getElementById('download-excel-btn').addEventListener('click', function() {
+        if (currentFilename) {
+          window.location.href = `/download_excel/${currentFilename}`;
+        } else {
+          alert('No file available for download');
+        }
+      });
+    </script>
+  </body>
+</html>

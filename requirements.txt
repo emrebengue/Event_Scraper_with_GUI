@@ -1,0 +1,16 @@
+flask==3.1.0
+requests==2.32.3
+beautifulsoup4==4.13.4
+pandas==2.2.3
+#nltk==3.8.1
+#tiktoken==0.5.1
+python-dotenv==1.1.0
+openai==1.75.0
+selenium==4.31.0 
+validators==0.35.0
+uvicorn==0.34.2
+fastapi==0.115.12
+boto3==1.38.0
+pillow==11.2.1
+python-multipart==0.0.20
+Flask-SQLAlchemy==3.1.1

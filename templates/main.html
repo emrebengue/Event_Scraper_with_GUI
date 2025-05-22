@@ -1,0 +1,701 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>College Fair Finder - Dashboard</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary-color: #3354b3;
+      --primary-light: #edf2fd;
+      --secondary-color: #2ccd89;
+      --background-color: #f8fafd;
+      --text-color: #333;
+      --text-secondary: #6c757d;
+      --card-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+      --transition: all 0.25s ease;
+    }
+
+    body {
+      font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI",
+        Roboto, sans-serif;
+      background-color: var(--background-color);
+      color: var(--text-color);
+      line-height: 1.6;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Typography */
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+      font-weight: 700;
+      letter-spacing: -0.03em;
+    }
+
+    .text-primary {
+      color: var(--primary-color) !important;
+    }
+
+    /* Navbar */
+    .navbar {
+      background-color: white;
+      box-shadow: 0 2px 15px rgba(0, 0, 0, 0.04);
+      padding: 1.2rem 0;
+    }
+
+    .navbar-brand {
+      color: var(--primary-color) !important;
+      font-weight: 700;
+      font-size: 1.6rem;
+      letter-spacing: -0.02em;
+    }
+
+    .nav-link {
+      color: var(--text-color) !important;
+      font-weight: 500;
+      padding: 0.5rem 1.2rem !important;
+      transition: var(--transition);
+    }
+
+    .nav-link:hover {
+      color: var(--primary-color) !important;
+    }
+
+    /* Button styles */
+    .btn {
+      border: none;
+      font-weight: 600;
+      padding: 0.75rem 2rem;
+      border-radius: 8px;
+      transition: var(--transition);
+    }
+
+    .btn-sm {
+      padding: 0.4rem 1rem;
+      font-size: 0.875rem;
+    }
+
+    .btn-primary {
+      background-color: var(--primary-color);
+      color: white;
+    }
+
+    .btn-primary:hover {
+      background-color: #2a47a1;
+      transform: translateY(-2px);
+    }
+
+    .btn-success {
+      background-color: var(--secondary-color);
+      color: white;
+    }
+
+    .btn-success:hover {
+      background-color: #25b679;
+      transform: translateY(-2px);
+    }
+
+    .btn-outline-danger {
+      color: #dc3545;
+      border: 1px solid #dc3545;
+      background-color: transparent;
+    }
+
+    .btn-outline-danger:hover {
+      background-color: #dc3545;
+      color: white;
+    }
+
+    .btn-info {
+      background-color: #17a2b8;
+      color: white;
+    }
+
+    .btn-info:hover {
+      background-color: #138496;
+      transform: translateY(-2px);
+    }
+
+    .tab-content {
+      flex: 1;
+    }
+
+    /* Search container */
+    .search-container {
+      background-color: white;
+      border-radius: 12px;
+      box-shadow: var(--card-shadow);
+      padding: 2rem;
+      margin-bottom: 2rem;
+    }
+
+    .search-container h3 {
+      margin-bottom: 1.5rem;
+      color: var(--primary-color);
+    }
+
+    .form-control {
+      border-radius: 8px;
+      padding: 0.75rem 1.25rem;
+      border: 1px solid #e0e0e0;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
+      font-size: 1rem;
+    }
+
+    .form-control:focus {
+      border-color: var(--primary-color);
+      box-shadow: 0 0 0 3px rgba(51, 84, 179, 0.1);
+    }
+
+    /* Results container */
+    .results-container {
+      background-color: white;
+      border-radius: 12px;
+      box-shadow: var(--card-shadow);
+      padding: 2rem;
+      margin-bottom: 2rem;
+      display: none;
+    }
+
+    .results-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.5rem;
+      border-bottom: 1px solid #eee;
+      padding-bottom: 1.5rem;
+    }
+
+    .results-title {
+      font-size: 1.75rem;
+      font-weight: 700;
+      margin-bottom: 0;
+      color: var(--primary-color);
+    }
+
+    .action-buttons {
+      display: flex;
+      gap: 10px;
+    }
+
+    /* Event cards */
+    .event-card {
+      background-color: white;
+      border-radius: 12px;
+      box-shadow: var(--card-shadow);
+      margin-bottom: 1.5rem;
+      overflow: hidden;
+      transition: var(--transition);
+    }
+
+    .event-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+    }
+
+    .event-header {
+      background-color: var(--primary-light);
+      padding: 1.25rem;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    }
+
+    .event-header h4 {
+      margin-bottom: 0.5rem;
+      color: var(--primary-color);
+    }
+
+    .event-header p {
+      margin-bottom: 0;
+      color: var(--text-secondary);
+      font-size: 0.9rem;
+    }
+
+    .event-body {
+      padding: 1.5rem;
+    }
+
+    .event-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 0.5rem;
+      padding: 1rem 1.5rem;
+      background-color: #fafafa;
+      border-top: 1px solid rgba(0, 0, 0, 0.05);
+    }
+
+    /* Loading overlay */
+    #loading {
+      background: rgba(0, 0, 0, 0.7);
+      z-index: 1050;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .loading-content {
+      background: white;
+      padding: 2.5rem;
+      border-radius: 12px;
+      box-shadow: var(--card-shadow);
+      text-align: center;
+    }
+
+    /* JSON Preview Modal */
+    #json-content {
+      background-color: #f8f9fa;
+      padding: 1.5rem;
+      border-radius: 8px;
+      font-family: monospace;
+      white-space: pre-wrap;
+      word-break: break-word;
+      max-height: 70vh;
+      overflow-y: auto;
+      font-size: 0.9rem;
+    }
+
+    .modal-content {
+      border: none;
+      border-radius: 12px;
+      overflow: hidden;
+    }
+
+    .modal-header {
+      background-color: var(--primary-light);
+      border-bottom: none;
+    }
+
+    .modal-title {
+      color: var(--primary-color);
+      font-weight: 600;
+    }
+
+    /* Tab navigation */
+    .nav-tabs {
+      border-bottom: 2px solid #e9ecef;
+      margin-bottom: 1.5rem;
+    }
+
+    .nav-tabs .nav-link {
+      border: none;
+      font-weight: 600;
+      color: var(--text-secondary) !important;
+      padding: 1rem 1.5rem;
+      margin-bottom: -2px;
+      background: transparent;
+    }
+
+    .nav-tabs .nav-link.active {
+      color: var(--primary-color) !important;
+      border-bottom: 2px solid var(--primary-color);
+    }
+
+    /* Alert message */
+    .alert {
+      padding: 1rem 1.5rem;
+      margin-bottom: 1.5rem;
+      border: none;
+      border-radius: 8px;
+    }
+
+    .alert-success {
+      background-color: #e6f7ee;
+      color: #2ccd89;
+    }
+
+    .events-summary {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      padding: 1rem 1.5rem;
+      background-color: var(--primary-light);
+      border-radius: 8px;
+      margin: 1.5rem 0;
+      color: var(--primary-color);
+    }
+
+    .events-summary-icon {
+      font-size: 1.5rem;
+    }
+
+    .events-summary-text {
+      font-weight: 600;
+      margin-bottom: 0;
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg sticky-top">
+    <div class="container">
+      <a class="navbar-brand" href="/">
+        <i class="fas fa-calendar-alt me-2"></i>College Fair Finder
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+        <ul class="navbar-nav">
+          <li class="nav-item">
+            <a class="nav-link" href="{{ url_for('main_page') }}">Dashboard</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{{ url_for('view_events') }}">Saved Events</a>
+          </li>
+          <li class="nav-item">
+            <span class="nav-link">Welcome, {{ current_user.username }}</span>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{{ url_for('logout') }}">Logout</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Main Content -->
+  <div class="container my-5">
+    <ul class="nav nav-tabs" id="mainTabs" role="tablist">
+      <li class="nav-item" role="presentation">
+        <button class="nav-link active" id="search-tab" data-bs-toggle="tab" data-bs-target="#search" type="button"
+          role="tab" aria-controls="search" aria-selected="true">
+          <i class="fas fa-search me-2"></i>Search
+        </button>
+      </li>
+      <li class="nav-item" role="presentation">
+        <button class="nav-link" id="events-tab" data-bs-toggle="tab" data-bs-target="#events" type="button" role="tab"
+          aria-controls="events" aria-selected="false">
+          <i class="fas fa-calendar-day me-2"></i>Recent Events
+        </button>
+      </li>
+    </ul>
+
+    <div class="tab-content" id="mainTabsContent">
+      <!-- Search Tab -->
+      <div class="tab-pane fade show active" id="search" role="tabpanel" aria-labelledby="search-tab">
+        <div class="search-container">
+          <h3>Search for College Fair Events</h3>
+          <form id="urlForm">
+            <div class="mb-3">
+              <label for="url" class="form-label">Website URL</label>
+              <input type="url" class="form-control" id="url" name="url" required
+                placeholder="Enter a college fair website URL" />
+              <div class="form-text">
+                Paste any college fair or event listing URL to extract events.
+              </div>
+            </div>
+            <div class="d-flex align-items-center gap-3">
+              <button type="submit" class="btn btn-primary">
+                <i class="fas fa-search me-2"></i>Extract Events
+              </button>
+
+              <form id="pdfUploadForm" enctype="multipart/form-data">
+                <label class="btn btn-primary">
+                  <i class="fas fa-file-upload me-2"></i>Upload PDF
+                  <input type="file" name="pdf" id="pdfInput" accept="application/pdf" hidden>
+                </label>
+              </form>
+            </div>
+          </form>
+        </div>
+
+        <div id="events-summary" class="events-summary" style="display: none;">
+          <i class="fas fa-check-circle events-summary-icon"></i>
+          <p class="events-summary-text">Events have been saved to your database.</p>
+        </div>
+
+        <div class="results-container" id="results-container">
+          <div class="results-header">
+            <h2 class="results-title">Event Results</h2>
+            <div class="action-buttons">
+              <button class="btn btn-primary" id="view-json-btn">
+                <i class="fas fa-eye me-2"></i>View JSON
+              </button>
+              <button class="btn btn-success" id="download-json-btn">
+                <i class="fas fa-download me-2"></i>Download JSON
+              </button>
+              <button class="btn btn-info" id="download-excel-btn">
+                <i class="fas fa-file-excel me-2"></i>Download Excel
+              </button>
+              <a href="{{ url_for('view_events') }}" class="btn btn-secondary">
+                <i class="fas fa-list me-2"></i>View All Events
+              </a>
+            </div>
+          </div>
+          <div id="results" class="table-responsive"></div>
+        </div>
+      </div>
+
+      <!-- Recent Events Tab -->
+      <div class="tab-pane fade" id="events" role="tabpanel" aria-labelledby="events-tab">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+          <h3>Your Recent Events</h3>
+          <a href="{{ url_for('view_events') }}" class="btn btn-primary">
+            <i class="fas fa-list me-2"></i>View All Events
+          </a>
+        </div>
+
+        <div id="events-list">
+          {% if events %}
+          <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+            {% for event in events[:6] %}
+            <div class="col">
+              <div class="event-card h-100">
+                <div class="event-header">
+                  <h4>{{ event.name }}</h4>
+                  {% if event.date or event.time %}
+                  <p>
+                    {% if event.date %}
+                    <i class="fas fa-calendar-day me-1"></i> {{ event.date }}
+                    {% endif %}
+                    {% if event.time %}
+                    {% if event.date %} | {% endif %}
+                    <i class="fas fa-clock me-1"></i> {{ event.time }}
+                    {% endif %}
+                  </p>
+                  {% endif %}
+
+                  {% if event.city or event.state %}
+                  <p>
+                    <i class="fas fa-map-marker-alt me-1"></i>
+                    {% if event.city and event.state %}
+                    {{ event.city }}, {{ event.state }}
+                    {% elif event.city %}
+                    {{ event.city }}
+                    {% else %}
+                    {{ event.state }}
+                    {% endif %}
+                  </p>
+                  {% endif %}
+                </div>
+                <div class="event-actions">
+                  <a href="{{ url_for('view_event', event_id=event.id) }}" class="btn btn-sm btn-primary">
+                    <i class="fas fa-eye me-2"></i>View Details
+                  </a>
+                  <a href="{{ url_for('edit_event', event_id=event.id) }}" class="btn btn-sm btn-info">
+                    <i class="fas fa-edit me-2"></i>Edit
+                  </a>
+                </div>
+              </div>
+            </div>
+            {% endfor %}
+          </div>
+          {% else %}
+          <div class="text-center p-5 bg-white rounded shadow-sm">
+            <i class="fas fa-calendar-day fa-3x text-muted mb-3"></i>
+            <h4>No events yet</h4>
+            <p class="text-muted">Start searching for college fairs to save events.</p>
+            <button data-bs-target="#search" data-bs-toggle="tab" class="btn btn-primary mt-3">
+              <i class="fas fa-search me-2"></i>Start Searching
+            </button>
+          </div>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Loading Indicator -->
+  <div id="loading" class="d-none">
+    <div class="loading-content">
+      <div class="spinner-border text-primary" style="width: 3rem; height: 3rem"></div>
+      <h5 class="mt-3">Processing Events</h5>
+      <p class="text-muted">This may take a moment while we analyze the page.</p>
+    </div>
+  </div>
+
+  <!-- JSON Viewer Modal -->
+  <div class="modal fade" id="jsonModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-scrollable">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">JSON Data</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <pre id="json-content" style="max-height: 500px; overflow-y: auto;"></pre>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    // Global variables
+    let currentFilename = '';
+    let jsonData = null;
+
+    // Process URL form submission
+    document
+      .getElementById("urlForm")
+      .addEventListener("submit", async function (e) {
+        e.preventDefault();
+
+        const url = document.getElementById("url").value;
+        const loading = document.getElementById("loading");
+        const resultsContainer = document.getElementById("results-container");
+        const eventsSummary = document.getElementById("events-summary");
+        const results = document.getElementById("results");
+
+        loading.classList.remove("d-none");
+        results.innerHTML = "";
+        resultsContainer.style.display = "none";
+        eventsSummary.style.display = "none";
+
+        try {
+          const response = await fetch("/process", {
+            method: "POST",
+            headers: {"Content-Type": "application/x-www-form-urlencoded"},
+            body: `url=${encodeURIComponent(url)}`,
+          });
+
+          const data = await response.json();
+
+          if (response.ok) {
+            results.innerHTML = data.table;
+            resultsContainer.style.display = "block";
+            resultsContainer.scrollIntoView({behavior: "smooth"});
+
+            // Store the filename and JSON data
+            currentFilename = data.filename;
+            jsonData = data.data;
+
+            // Show events saved summary
+            if (data.events_saved > 0) {
+              const summaryText = document.querySelector('.events-summary-text');
+              summaryText.textContent = `${data.events_saved} event${data.events_saved > 1 ? 's' : ''} successfully extracted and saved to your database.`;
+              eventsSummary.style.display = "flex";
+            }
+          } else {
+            throw new Error(data.error || "Unable to process the URL");
+          }
+        } catch (error) {
+          results.innerHTML = `<div class="alert alert-danger">${error.message}</div>`;
+          resultsContainer.style.display = "block";
+        } finally {
+          loading.classList.add("d-none");
+        }
+      });
+
+    // View JSON button
+    document.getElementById('view-json-btn').addEventListener('click', function () {
+      if (jsonData) {
+        // Format JSON with syntax highlighting
+        const formattedJson = JSON.stringify(jsonData, null, 2)
+          .replace(/&/g, '&amp;')
+          .replace(/</g, '&lt;')
+          .replace(/>/g, '&gt;');
+
+        document.getElementById('json-content').innerHTML = formattedJson;
+        new bootstrap.Modal(document.getElementById('jsonModal')).show();
+      } else {
+        alert('No JSON data available');
+      }
+    });
+
+    // Download JSON button
+    document.getElementById('download-json-btn').addEventListener('click', function () {
+      if (currentFilename) {
+        window.location.href = `/download/${currentFilename}`;
+      } else {
+        alert('No file available for download');
+      }
+    });
+
+    // Download Excel button
+    document.getElementById('download-excel-btn').addEventListener('click', function () {
+      if (currentFilename) {
+        window.location.href = `/download_excel/${currentFilename}`;
+      } else {
+        alert('No file available for download');
+      }
+    });
+
+    // Tab handling
+    document.querySelector('button[data-bs-target="#events"]').addEventListener('click', function () {
+      // Reload events tab if needed
+      // fetchLatestEvents();
+    });
+
+    // Handle the "Start Searching" button in empty state
+    document.addEventListener('click', function (e) {
+      if (e.target.matches('[href="#search-tab"]') || e.target.closest('[data-bs-target="#search"]')) {
+        document.getElementById('search-tab').click();
+      }
+    });
+    // Handle PDF Uplaods
+    document.getElementById("pdfInput").addEventListener("click", function () {
+      this.value = null;
+    });
+    document.getElementById("pdfInput").addEventListener("change", async function () {
+      const file = this.files[0];
+      if (!file) return;
+
+      const formData = new FormData();
+      formData.append("pdf", file);
+
+      const loading = document.getElementById("loading");
+      const resultsContainer = document.getElementById("results-container");
+      const eventsSummary = document.getElementById("events-summary");
+      const results = document.getElementById("results");
+
+      loading.classList.remove("d-none");
+      results.innerHTML = "";
+      resultsContainer.style.display = "none";
+      eventsSummary.style.display = "none";
+
+      try {
+        const response = await fetch("/upload-pdf", {
+          method: "POST",
+          body: formData,
+        });
+
+        const data = await response.json();
+
+        if (response.ok) {
+          results.innerHTML = data.table;
+          resultsContainer.style.display = "block";
+          resultsContainer.scrollIntoView({behavior: "smooth"});
+
+          currentFilename = data.filename;
+          jsonData = data.data;
+
+          if (data.events_saved > 0) {
+            const summaryText = document.querySelector(".events-summary-text");
+            summaryText.textContent = `${data.events_saved} event${data.events_saved > 1 ? "s" : ""} successfully extracted and saved to your database.`;
+            eventsSummary.style.display = "flex";
+          }
+        } else {
+          throw new Error(data.error || "PDF processing failed");
+        }
+      } catch (error) {
+        results.innerHTML = `<div class="alert alert-danger">${error.message}</div>`;
+        resultsContainer.style.display = "block";
+      } finally {
+        loading.classList.add("d-none");
+      }
+    });
+  </script>
+</body>
+
+</html>

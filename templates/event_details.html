@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Event Details - College Fair Finder</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #3354b3;
+            --primary-light: #edf2fd;
+            --secondary-color: #2ccd89;
+            --background-color: #f8fafd;
+            --text-color: #333;
+            --text-secondary: #6c757d;
+            --card-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+            --transition: all 0.25s ease;
+        }
+
+        body {
+            font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI",
+                Roboto, sans-serif;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+
+        /* Typography */
+        h1, h2, h3, h4, h5, h6 {
+            font-weight: 700;
+            letter-spacing: -0.03em;
+        }
+
+        .text-primary {
+            color: var(--primary-color) !important;
+        }
+
+        /* Navbar */
+        .navbar {
+            background-color: white;
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.04);
+            padding: 1.2rem 0;
+        }
+
+        .navbar-brand {
+            color: var(--primary-color) !important;
+            font-weight: 700;
+            font-size: 1.6rem;
+            letter-spacing: -0.02em;
+        }
+
+        .nav-link {
+            color: var(--text-color) !important;
+            font-weight: 500;
+            padding: 0.5rem 1.2rem !important;
+            transition: var(--transition);
+        }
+
+        .nav-link:hover {
+            color: var(--primary-color) !important;
+        }
+
+        /* Button styles */
+        .btn {
+            border: none;
+            font-weight: 600;
+            padding: 0.75rem 2rem;
+            border-radius: 8px;
+            transition: var(--transition);
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: #2a47a1;
+            transform: translateY(-2px);
+        }
+
+        .btn-info {
+            background-color: #17a2b8;
+            color: white;
+        }
+        
+        .btn-info:hover {
+            background-color: #138496;
+            transform: translateY(-2px);
+        }
+
+        .btn-outline-danger {
+            color: #dc3545;
+            border: 1px solid #dc3545;
+            background-color: transparent;
+        }
+
+        .btn-outline-danger:hover {
+            background-color: #dc3545;
+            color: white;
+        }
+
+        /* Event detail card */
+        .event-detail-card {
+            background-color: white;
+            border-radius: 12px;
+            box-shadow: var(--card-shadow);
+            overflow: hidden;
+            margin-bottom: 2rem;
+        }
+
+        .event-header {
+            background-color: var(--primary-light);
+            padding: 2rem;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .event-title {
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+        }
+
+        .event-meta {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            margin-top: 1rem;
+            color: var(--text-secondary);
+        }
+
+        .event-meta-item {
+            display: flex;
+            align-items: center;
+        }
+
+        .event-meta-item i {
+            margin-right: 0.5rem;
+        }
+
+        .event-body {
+            padding: 2rem;
+        }
+
+        .event-detail-item {
+            margin-bottom: 1.5rem;
+        }
+
+        .event-detail-label {
+            font-weight: 600;
+            color: var(--text-secondary);
+            margin-bottom: 0.25rem;
+        }
+
+        .event-detail-value {
+            font-size: 1.1rem;
+        }
+
+        .event-url {
+            word-break: break-all;
+            color: var(--primary-color);
+        }
+
+        .event-source {
+            margin-top: 2rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid #eee;
+        }
+
+        .event-source-label {
+            font-weight: 600;
+            color: var(--text-secondary);
+            margin-bottom: 0.25rem;
+        }
+
+        .event-source-value {
+            word-break: break-all;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        .event-actions {
+            display: flex;
+            gap: 0.75rem;
+            margin-top: 1.5rem;
+            justify-content: flex-end;
+            padding-top: 1.5rem;
+            border-top: 1px solid #eee;
+        }
+
+        /* Back button */
+        .back-button {
+            display: inline-flex;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            text-decoration: none;
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        .back-button:hover {
+            color: var(--primary-color);
+        }
+
+        .back-button i {
+            margin-right: 0.5rem;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg sticky-top">
+        <div class="container">
+            <a class="navbar-brand" href="/">
+                <i class="fas fa-calendar-alt me-2"></i>College Fair Finder
+            </a>
+            <button
+                class="navbar-toggler"
+                type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#navbarNav"
+            >
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div
+                class="collapse navbar-collapse justify-content-end"
+                id="navbarNav"
+            >
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('main_page') }}">Dashboard</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('view_events') }}">Saved Events</a>
+                    </li>
+                    <li class="nav-item">
+                        <span class="nav-link">Welcome, {{ session.username }}</span>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('logout') }}">Logout</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container my-5">
+        <a href="{{ url_for('view_events') }}" class="back-button">
+            <i class="fas fa-arrow-left"></i> Back to Events
+        </a>
+
+        <div class="event-detail-card">
+            <div class="event-header">
+                <h1 class="event-title">{{ event.name }}</h1>
+                <div class="event-meta">
+                    {% if event.date %}
+                    <div class="event-meta-item">
+                        <i class="fas fa-calendar-day"></i>
+                        <span>{{ event.date }}</span>
+                    </div>
+                    {% endif %}
+                    
+                    {% if event.time %}
+                    <div class="event-meta-item">
+                        <i class="fas fa-clock"></i>
+                        <span>{{ event.time }}</span>
+                    </div>
+                    {% endif %}
+                    
+                    {% if event.city or event.state %}
+                    <div class="event-meta-item">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <span>
+                            {% if event.city and event.state %}
+                                {{ event.city }}, {{ event.state }}
+                            {% elif event.city %}
+                                {{ event.city }}
+                            {% else %}
+                                {{ event.state }}
+                            {% endif %}
+                        </span>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+            
+            <div class="event-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="event-detail-item">
+                            <div class="event-detail-label">Event Name</div>
+                            <div class="event-detail-value">{{ event.name }}</div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-6">
+                        <div class="event-detail-item">
+                            <div class="event-detail-label">Date</div>
+                            <div class="event-detail-value">{{ event.date or 'Not specified' }}</div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-6">
+                        <div class="event-detail-item">
+                            <div class="event-detail-label">Time</div>
+                            <div class="event-detail-value">{{ event.time or 'Not specified' }}</div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-6">
+                        <div class="event-detail-item">
+                            <div class="event-detail-label">City</div>
+                            <div class="event-detail-value">{{ event.city or 'Not specified' }}</div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-6">
+                        <div class="event-detail-item">
+                            <div class="event-detail-label">State</div>
+                            <div class="event-detail-value">{{ event.state or 'Not specified' }}</div>
+                        </div>
+                    </div>
+                    
+                    {% if event.url %}
+                    <div class="col-md-12">
+                        <div class="event-detail-item">
+                            <div class="event-detail-label">Event URL</div>
+                            <div class="event-detail-value">
+                                <a href="{{ event.url }}" target="_blank" class="event-url">
+                                    {{ event.url }}
+                                    <i class="fas fa-external-link-alt ms-2"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    {% endif %}
+                    
+                    <div class="col-md-12">
+                        <div class="event-source">
+                            <div class="event-source-label">Source URL</div>
+                            <div class="event-source-value">
+                                <a href="{{ event.source_url }}" target="_blank">
+                                    {{ event.source_url }}
+                                    <i class="fas fa-external-link-alt ms-2"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="event-actions">
+                    <a href="{{ url_for('edit_event', event_id=event.id) }}" class="btn btn-info">
+                        <i class="fas fa-edit me-2"></i>Edit Event
+                    </a>
+                    <a href="{{ url_for('delete_event', event_id=event.id) }}" 
+                       class="btn btn-outline-danger"
+                       onclick="return confirm('Are you sure you want to delete this event?')">
+                        <i class="fas fa-trash me-2"></i>Delete Event
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html> 

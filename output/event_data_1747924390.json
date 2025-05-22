@@ -1,0 +1,44 @@
+{
+    "events": [
+        {
+            "name": "CGN Live: AI, College Admission, and You",
+            "date": "2025-06-03",
+            "time": "18:30",
+            "city": null,
+            "state": null,
+            "url": "https://members.sacac.org/event-calendar/Details/cgn-live-ai-college-admission-and-you-1391501?sourceTypeId=Website"
+        },
+        {
+            "name": "Sweet Tea Tour",
+            "date": "2025-06-09",
+            "time": "13:30",
+            "city": null,
+            "state": null,
+            "url": "https://members.sacac.org/event-calendar/Details/sweet-tea-tour-1323822?sourceTypeId=Website"
+        },
+        {
+            "name": "2025 Summer Seminar",
+            "date": "2025-07-15",
+            "time": null,
+            "city": "Nashville",
+            "state": "TN",
+            "url": "https://members.sacac.org/event-calendar/Details/2025-summer-seminar-1306668?sourceTypeId=Website"
+        },
+        {
+            "name": "2025 Dry Run",
+            "date": "2025-07-20",
+            "time": null,
+            "city": "Winter Park",
+            "state": "FL",
+            "url": "https://members.sacac.org/event-calendar/Details/2025-dry-run-1296703?sourceTypeId=Website"
+        },
+        {
+            "name": "NACAC Conference 2025",
+            "date": "2025-09-18",
+            "time": null,
+            "city": "Columbus",
+            "state": "OH",
+            "url": "https://members.sacac.org/event-calendar/Details/nacac-conference-2025-1357533?sourceTypeId=Website"
+        }
+    ]
+}
