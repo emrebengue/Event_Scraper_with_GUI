@@ -1,6 +1,6 @@
 import time
 import os
-from config import s3, textract, bucket_name_pdf, region
+from config import aws_s3, aws_textract, bucket_name_pdf, aws_region, client_openai
 from collections import defaultdict
 import json
 from openai import OpenAI
@@ -11,10 +11,9 @@ load_dotenv()
 
 # ADD YOUR OPENAI API KEY!!
 # [0]Openai Paid
-api_key_list = [x.strip() for x in os.getenv("API_LIST").split(",")]
-api_key_openai = api_key_list[0]
+# api_key_openai = os.getenv("API")
 
-client_openai = OpenAI(api_key=api_key_openai)
+# client_openai = OpenAI(api_key=api_key_openai)
 
 llm_models = LLMModels(client_openai=client_openai)
 
@@ -22,16 +21,16 @@ llm_models = LLMModels(client_openai=client_openai)
 def extract_text_from_pdf(document_name):
     # Create bucket if it does not exists already
     try:
-        s3.create_bucket(
+        aws_s3.create_bucket(
             Bucket=bucket_name_pdf,
-            CreateBucketConfiguration={"LocationConstraint": region},
+            CreateBucketConfiguration={"LocationConstraint": aws_region},
         )
         print(f"{bucket_name_pdf} created.")
 
-    except s3.exceptions.BucketAlreadyOwnedByYou:
+    except aws_s3.exceptions.BucketAlreadyOwnedByYou:
         print(f"{bucket_name_pdf} already exists.")
 
-    response = textract.start_document_text_detection(
+    response = aws_textract.start_document_text_detection(
         DocumentLocation={
             "S3Object": {"Bucket": bucket_name_pdf, "Name": document_name}
         }
@@ -41,7 +40,7 @@ def extract_text_from_pdf(document_name):
     print(f"Started job with ID: {job_id}")
 
     while True:
-        result = textract.get_document_text_detection(JobId=job_id)
+        result = aws_textract.get_document_text_detection(JobId=job_id)
         status = result["JobStatus"]
         print(f"Job status: {status}")
         if status in ["SUCCEEDED", "FAILED"]:
@@ -53,11 +52,11 @@ def extract_text_from_pdf(document_name):
 
         while True:
             if next_token:
-                result = textract.get_document_text_detection(
+                result = aws_textract.get_document_text_detection(
                     JobId=job_id, NextToken=next_token
                 )
             else:
-                result = textract.get_document_text_detection(JobId=job_id)
+                result = aws_textract.get_document_text_detection(JobId=job_id)
 
             blocks.extend(result["Blocks"])
             next_token = result.get("NextToken")
@@ -132,7 +131,7 @@ def extract_text_from_pdf(document_name):
 
 def upload_file_to_s3(local_path, pdf_file):
     file_name = os.path.basename(pdf_file)
-    s3.upload_file(local_path, bucket_name_pdf, file_name)
+    aws_s3.upload_file(local_path, bucket_name_pdf, file_name)
     print(f"Uploaded {local_path} to s3://{bucket_name_pdf}/{file_name}")
     return file_name
 

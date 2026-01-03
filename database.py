@@ -26,9 +26,10 @@ class Event(db.Model):
     city = db.Column(db.String(100))
     state = db.Column(db.String(100))
     url = db.Column(db.Text)
+    price = db.Column(db.String(100))
     source_url = db.Column(db.Text, nullable=False)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=True)
 
     def __repr__(self):
         return f'<Event {self.name}>'

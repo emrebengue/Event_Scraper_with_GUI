@@ -33,8 +33,8 @@ from LLM_openai import LLMModels
 
 # ADD YOUR OPENAI API KEY!!
 # [0]Openai Paid
-api_key_list = [x.strip() for x in os.getenv("API_LIST").split(",")]
-api_key_openai = api_key_list[0]
+#api_key_list = [x.strip() for x in os.getenv("API_LIST").split(",")]
+api_key_openai = os.getenv("API")
 
 client_openai = OpenAI(api_key=api_key_openai)
 
@@ -87,6 +87,10 @@ def clean_extracted_html(html):
       • Optionally removing empty <a> tags (unless they contain an image).
       • Collapsing multiple whitespace characters.
     """
+    # Handle None or non-string input
+    if html is None or not isinstance(html, str):
+        return ""
+
     soup = BeautifulSoup(html, "html.parser")
 
     # 1. Remove HTML comments (e.g. instructions or inline notes)
@@ -118,6 +122,10 @@ def extract_event_sections(html_text):
     most likely holds event information. We boost candidates that contain
     both date and time information.
     """
+    # Handle None input
+    if html_text is None:
+        return "No event section found"
+
     # 1. Parse and clean HTML
     soup = BeautifulSoup(html_text, "html.parser")
     # Remove irrelevant tags
@@ -235,6 +243,7 @@ def transform_to_plain_text_and_clean(raw_text, base_url=None, flag=None):
 
     except Exception as e:
         print("ERROR occured while transforming to text&clean", e)
+        return None, []
 
 
 # =====================================================================LINKS=====================================================================
@@ -244,6 +253,10 @@ def extract_date_location_sections(html_text):
     then moves up two parent levels to return the relevant event section.
     """
     try:
+        # Handle None input
+        if html_text is None:
+            return "No date or location information found"
+
         # Parse HTML
         soup = BeautifulSoup(html_text, "html.parser")
 
@@ -492,11 +505,23 @@ def main(input_data):
                 plain_text, event_links = transform_to_plain_text_and_clean(
                     raw_text, base_url=input_data
                 )
+
+                # Check if plain_text is None (extraction failed)
+                if plain_text is None:
+                    print("Failed to extract plain text from raw_text")
+                    return {"error": "Failed to extract event data from the webpage"}
+
                 print("STEP 1")
                 print("EVENT LINKS:", "LEN:", len(event_links), "\n", event_links)
 
                 if len(event_links) != 0:
                     extracted_links = llm_models.llm_openai_get_event_links(event_links)
+
+                    # Check if LLM call failed
+                    if extracted_links is None:
+                        print("Failed to get event links from LLM (connection error or API failure)")
+                        return {"error": "Failed to process event links with LLM"}
+
                     print(
                         "EXTRACTED EVENT LINKS:",
                         "LEN:",
@@ -511,16 +536,26 @@ def main(input_data):
                     links_result = llm_models.llm_openai_dictionary(
                         get_event_dictionary
                     )
-                    links_result = (
-                        links_result.replace("`", "").replace("json", "").strip()
-                    )
+
+                    # Check if LLM call failed
+                    if links_result is None:
+                        links_result = '{"events": []}'
+                    else:
+                        links_result = (
+                            links_result.replace("`", "").replace("json", "").strip()
+                        )
 
                     time.sleep(2)
 
                     plain_text_result = llm_models.llm_openai_plain_text(plain_text)
-                    plain_text_result = (
-                        plain_text_result.replace("`", "").replace("json", "").strip()
-                    )
+
+                    # Check if LLM call failed
+                    if plain_text_result is None:
+                        plain_text_result = '{"events": []}'
+                    else:
+                        plain_text_result = (
+                            plain_text_result.replace("`", "").replace("json", "").strip()
+                        )
 
                     try:
                         links_json = json.loads(links_result)
@@ -549,6 +584,12 @@ def main(input_data):
                 else:
                     print("========PLAIN TEXT========\n", plain_text)
                     result = llm_models.llm_openai_plain_text(plain_text)
+
+                    # Check if LLM call failed
+                    if result is None:
+                        print("Failed to process plain text with LLM (connection error or API failure)")
+                        return {"error": "Failed to process event data with LLM"}
+
                     result = result.replace("`", "").replace("json", "").strip()
                     print(result)
                     return result
@@ -564,6 +605,12 @@ def main(input_data):
         print("Detected plain text input (likely PDF). Sending to PDF-tailored LLM...")
         try:
             result = llm_models.llm_openai_from_textract_pdf(input_data)
+
+            # Check if LLM call failed
+            if result is None:
+                print("Failed to process PDF with LLM (connection error or API failure)")
+                return {"error": "Failed to process PDF data with LLM"}
+
             result = result.replace("`", "").replace("json", "").strip()
             print("PDF LLM Result:\n", result)
 
